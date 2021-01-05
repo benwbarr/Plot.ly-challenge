@@ -1,4 +1,5 @@
-d3.json("data/sample.json", function(data) {
-    console.log(data);
+d3.json("samples.json").then((data)=> {
+var metadata = data.metadata;
+    console.log(metadata);
 });
 
