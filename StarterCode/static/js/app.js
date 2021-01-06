@@ -3,9 +3,9 @@ function Metadatabuild(sample) {
         var metadata = data.metadata;
         var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
         var result = resultArray[0];
+
+// Demo info
         var PANEL = d3.select("#sample-metadata");
-
-
         PANEL.html("");
 
         Object.entries(result).forEach(([key, value]) => {
@@ -38,11 +38,38 @@ function Chartbuild(sample) {
         var barLayout = {
             title: "Top 10 OTUs found in that individual",
             xaxis: {title: "OTU ID"},
-            yaxis: {title: "Values"},
-            margin: {t: 30, l: 150}
+            yaxis: {title: "Values"}
         };
 
         Plotly.newPlot("bar", barData, barLayout);
     })
 }
+function init() {
+    // Dropdown select element
+    var selector = d3.select("#selDataset");
 
+    // Populate the select options
+    d3.json("samples.json").then((data) => {
+        var sampleNames = data.names;
+
+        sampleNames.forEach((sample) => {
+            selector
+                .append("option")
+                .text(sample)
+                .property("value", sample);
+        });
+
+        var firstSample = sampleNames[0];
+        Chartbuild(firstSample);
+        Metadatabuild(firstSample);
+    });
+}
+
+function optionChanged(new_sample) {
+    // Fetch new data
+    Chartbuild(new_sample);
+    Metadatabuild(new_sample);
+}
+
+// Start the dashboard
+init();
