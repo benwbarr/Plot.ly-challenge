@@ -42,8 +42,33 @@ function Chartbuild(sample) {
         };
 
         Plotly.newPlot("bar", barData, barLayout);
-    })
+
+        // Bubble chart
+
+        var bubbleData = [
+            {
+                x: otu_ids,
+                y: sample_values,
+                text: otu_labels,
+                mode: "markers",
+                marker: {
+                    size: sample_values,
+                    color: otu_ids,
+                    colorscale: "Portland"
+                }
+            }
+        ];
+
+        var bubbleLayout = {
+            title: "Bacteria Cultures Per Sample",
+            margin: {t: 0},
+            xaxis: {title: "OTU ID"}
+        }
+
+        Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+    });
 }
+
 function init() {
     // Dropdown select element
     var selector = d3.select("#selDataset");
